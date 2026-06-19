@@ -14,6 +14,26 @@ from telegram.constants import ChatMemberStatus
 from openpyxl import Workbook, load_workbook
 import json
 
+# ================ HEALTH CHECK (এখানে যোগ করুন) ================
+from flask import Flask, Response
+import threading
+
+app = Flask(__name__)
+
+@app.route('/healthz', methods=['GET', 'HEAD'])
+def health_check():
+    """Render-এর জন্য health check endpoint"""
+    return 'OK', 200
+
+@app.route('/', methods=['GET', 'HEAD'])
+def root():
+    """Root endpoint - UptimeRobot-এর জন্য"""
+    return 'Bot is running!', 200
+
+def run_health_server():
+    """Health check server চালু করুন"""
+    app.run(host='0.0.0.0', port=8080, debug=False, threaded=True)
+    
 # ================ CONFIG ================
 BOT_TOKEN = "8726292559:AAHv1CJu6V0rHlPw6v_zR8vGw4Cq58xzuq0"
 ADMIN_ID = 8061006207
